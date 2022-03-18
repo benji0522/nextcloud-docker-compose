@@ -41,7 +41,7 @@ services:
       - "${DATA_DIR}/nginx/certs:/etc/nginx/certs:ro"
       - "${DATA_DIR}/nginx/vhosts:/etc/nginx/vhost.d"
       - "${DATA_DIR}/nginx/html:/usr/share/nginx/html"
-      - ./nginx.conf:/etc/nginx/proxy.conf
+      - "${DATA_DIR}/nginx.conf:/etc/nginx/proxy.conf
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   letsencrypt-companion:
@@ -49,9 +49,9 @@ services:
     container_name: letsencrypt
     restart: always
     volumes:
-      - "${DATA_DIR}/nginx/certs:/etc/nginx/certs"
-      - "${DATA_DIR}/nginx/vhosts:/etc/nginx/vhost.d"
-      - "${DATA_DIR}/nginx/html:/usr/share/nginx/html"
+      - "${DATA_DIR}/nginx/certs:/etc/nginx/certs:rw"
+      - "${DATA_DIR}/nginx/vhosts:/etc/nginx/vhost.d:rw"
+      - "${DATA_DIR}/nginx/html:/usr/share/nginx/html:rw"
       - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       - reverse-proxy
