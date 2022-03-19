@@ -39,20 +39,20 @@ services:
       com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     volumes:
       - "${DATA_DIR}/nginx/certs:/etc/nginx/certs:ro"
-      - "${DATA_DIR}/nginx/vhosts:/etc/nginx/vhost.d"
-      - "${DATA_DIR}/nginx/html:/usr/share/nginx/html"
-      - "${DATA_DIR}/nginx.conf:/etc/nginx/proxy.conf
+      - "${DATA_DIR}/nginx/vhosts:/etc/nginx/vhost.d:rw"
+      - "${DATA_DIR}/nginx/html:/usr/share/nginx/html:rw"
+      - "${DATA_DIR}/nginx.conf:/etc/nginx/proxy.conf:rw"
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   letsencrypt-companion:
     image: jrcs/letsencrypt-nginx-proxy-companion
     container_name: letsencrypt
-    restart: always
+    restart: always    
     volumes:
       - "${DATA_DIR}/nginx/certs:/etc/nginx/certs:rw"
       - "${DATA_DIR}/nginx/vhosts:/etc/nginx/vhost.d:rw"
       - "${DATA_DIR}/nginx/html:/usr/share/nginx/html:rw"
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
     depends_on:
       - reverse-proxy
 
